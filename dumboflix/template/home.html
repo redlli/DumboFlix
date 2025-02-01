@@ -1,0 +1,19 @@
+{% extends "template/base.html"%}
+{% block content %}
+ <h2>Post...</h2>
+	<h1>------------------------------------------------------------------------</h1>
+	<div class="row row-cols-1 row-cols-md-3 g-4">
+	{% for Post in object_list %}
+		
+			<div class="card" style="width: 18rem;">
+			<img src="{{Post.poster}}" class="card-img-top" alt="...">
+			<a>Title: {{Post.title}}</a><br/>
+			<a>Author: {{Post.author}}</a><br/>
+			</div><br/>
+	{% endfor%}
+	</div>
+<h1>------------------------------------------------------------------------</h1>
+
+{% endblock %}
+
+

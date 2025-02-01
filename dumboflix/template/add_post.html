@@ -1,0 +1,15 @@
+{% extends "template/base.html"%}
+{% block content %}
+	{% if user.is_authenticated %}
+  		<h1>Adding post</h1><br/>
+  	
+  		<form method="POST">
+  		{% csrf_token%}
+  		{{form.as_p}}
+  		<br/>
+  		<button class="btn-secondary">Post</button>
+  	{% else%}
+  		<h1>Plece Login</h1>
+  	{% endif %}
+{% endblock %}
+
