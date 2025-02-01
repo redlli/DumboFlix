@@ -50,3 +50,22 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
         run: |
           python dumboflix/manage.py test
+          
+      - name: Deploy to Server
+        if: github.ref == 'refs/heads/main'
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_DIR: ${{ secrets.DEPLOY_DIR }}
+        run: |
+          echo "$DEPLOY_KEY" > deploy_key
+          chmod 600 deploy_key
+          ssh -i deploy_key -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
+            cd $DEPLOY_DIR
+            git pull origin main
+            source venv/bin/activate
+            pip install -r requirements.txt
+            python manage.py migrate
+            sudo systemctl restart your-django-service
+          EOF
